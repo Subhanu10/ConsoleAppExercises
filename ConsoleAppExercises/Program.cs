@@ -1,14 +1,18 @@
 ﻿using System;
 
+
 namespace ConsoleAppExercises
 {
     class Program
     {
-        static void Main(string[] args)
+        static void  Main(string[] args)
         {
             Console.WriteLine("Starting email sending process....");
+            
+            string fromAddress = "your.email@gmail.com";
             var sender = new MailKitEmailSender();
-            sender.SendEmailAsync()
+            await sender.SendEmailAsync(fromAddress);
+
         }
     }
 }

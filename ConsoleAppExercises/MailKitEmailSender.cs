@@ -9,38 +9,42 @@ using MimeKit;
 
 namespace ConsoleAppExercises
 {
-    class MailKitEmailSender
-    { 
-        public async Task SendEmailAsync()
-        {
-            string gmailAppPassword = "Your_16_DIGIT_APP_PASSWORD";
-            string fromAddress = "your.email@gmail.com";
-            string toAddress = "recipient.email@example.com";
-
-            var email = new MimeMessage();
-            email.From.Add(new MailboxAddress("Sender Name", fromAddress));
-            email.To.Add(new MailboxAddress("Recipent Name", toAddress));
-            email.Subject = "Test Email from C# (MailKit)";
-            email.Body = new TextPart("Plain");
+   public class MailKitEmailSender
+    {
+        
+            public async Task SendEmailAsync()
             {
-                Text = "This is a test email sent using MailKit.";
-            }
+                string gmailAppPassword = "Your_16_DIGIT_APP_PASSWORD";
+                string fromAddress = "your.email@gmail.com";
+                string toAddress = "recipient.email@example.com";
 
-            try
-            {
-                using (var smtp = new SmtpClient())
+                var email = new MimeMessage();
+                email.From.Add(new MailboxAddress("Sender Name", fromAddress));
+                email.To.Add(new MailboxAddress("Recipent Name", toAddress));
+                email.Subject = "Test Email from C# (MailKit)";
+                email.Body = new TextPart("Plain")
                 {
-                    await smtp.ConnectAsync("smtp.com", 587, SecureSocketOptions.StartTls);
-                    await smtp.AuthenticateAsync(fromAddress, gmailAppPassword);
-                    await smtp.SendAsync(email);
-                    await smtp.DisconnectAsync(true);
-                    Console.WriteLine("Email sent successfully!");
+                    Text = "this is a text email send using Mailkit."
+                };
+                   
+
+                try
+                {
+                    using (var smtp = new SmtpClient())
+                    {
+                        await smtp.ConnectAsync("smtp.com", 587, SecureSocketOptions.StartTls);
+                        await smtp.AuthenticateAsync(fromAddress, gmailAppPassword);
+                        await smtp.SendAsync(email);
+                        await smtp.DisconnectAsync(true);
+                        Console.WriteLine("Email sent successfully!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to send email:");
                 }
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine("Failed to send email:");
-            }
-        }
     }
+
 }
+

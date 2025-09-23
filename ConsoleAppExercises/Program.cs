@@ -1,5 +1,8 @@
 ﻿using System;
 using EmailService;
+using JsonThreadOperation;
+using Newtonsoft.Json;
+
 
 
 namespace ConsoleAppExercises
@@ -19,17 +22,20 @@ namespace ConsoleAppExercises
             //{
 
             //}
-            try
-            {
-                Console.WriteLine("Starting email sending process...");
-                var sender = new InbuildEmailSender();
-                sender.SendEmail();
-            }
-            catch
-            {
+            //try
+            //{
+            //Console.WriteLine("Starting email sending process...");
+            //var sender = new InbuildEmailSender();
+            //sender.SendEmail();
+            //}
+            //catch
+            //{
 
-            }
+            //}
 
+
+            PatientList b = new PatientList();
+            b.AddPatient();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using EmailService;
-using JsonThreadOperation;
 using Newtonsoft.Json;
+using JsonThreadOperation.Model;
 
 
 
@@ -34,8 +34,8 @@ namespace ConsoleAppExercises
             //}
 
 
-            PatientList b = new PatientList();
-            b.AddPatient();
+            Information details = new Information();
+            details.AddPatient();
         }
     }
 }

@@ -1,18 +1,9 @@
-{
-  "Patient": [
-    {
-      "Name": "Raj",
-      "MobileNumber": 6369092399,
-      "Email": "raj@gmail.com",
-      "Location": "Chennai",
-      "Address": "Gandhi nagar"
-    },
-    {
-      "Name": "Suriya",
-      "MobileNumber": 9159727759,
-      "Email": "suriya@gmail.com",
-      "Location": "Mumbai",
-      "Address": "Babu Colony"
-    }
-  ]
-}
+[
+  {
+    "Name": "dhoni",
+    "MobileNumber": 8754481206,
+    "Email": "dhoni@gmail.com",
+    "Location": "thoppampatti",
+    "Address": "narikkalpatti"
+  }
+]

@@ -7,16 +7,18 @@ using System.Linq;
 
 namespace JsonThreadOperation.Model
 {
-    class Information
+    public class Information
     {
 
-        static string Filepath = "C:\\Users\\Anaiyaan\\source\\repos\\ConsoleAppExercises\\ConsoleAppExercises\\Data\\";
+        static string Filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Data\\Data.json";
+
         static List<Patient> patients = new List<Patient>();
-        static void ChoiceAction()
+        public void ChoiceAction()
         {
-            LoadPatients();
+            
             while (true)
             {
+                LoadPatients();
                 Console.WriteLine("Patient Details");
                 Console.WriteLine("1. Add Patients");
                 Console.WriteLine("2. Update Patients");
@@ -29,15 +31,18 @@ namespace JsonThreadOperation.Model
                 switch (Option)
                 {
                     case 1:
+                        
                         AddPatient();
                         break;
                     case 2:
+                        
                         UpdatePatient();
                         break;
                     case 3:
                         DeletePatient();
                         break;
                     case 4:
+                        
                         PrintPatientDetails();
                         break;
                     case 5:
@@ -52,25 +57,56 @@ namespace JsonThreadOperation.Model
                 }
             }
         }
-        static void LoadPatients()
+        public void LoadPatients()
         {
             if (File.Exists(Filepath))
             {
-                string json = File.ReadAllText(Filepath);
-                patients = JsonConvert.DeserializeObject<List<Patient>>(json);
-                File.WriteAllText(Filepath, json);
+                try
+                {
+                    string json = File.ReadAllText(Filepath);
+                    patients = JsonConvert.DeserializeObject<List<Patient>>(json);
+                }
+                catch(JsonException ex)
+                {
+                    Console.WriteLine("Error deserializing JSON:" + ex.Message);
+                    throw;
+                }
             }
         }
-        static void SavePatients()
-        {
-            string json = JsonConvert.SerializeObject(patients, Formatting.Indented);
-            File.WriteAllText(Filepath, json);
-        }
-        static void AddPatient()
+
+        public List<Patient> ReadJsonALLforPatients()
         {
             try
             {
-                Console.WriteLine("Enter the Index:");
+               var listOfpatients =  File.ReadAllText(Filepath);
+
+               var list =  JsonConvert.DeserializeObject<List<Patient>>(listOfpatients);
+
+                return list != null && list.Count > 0 ? list : new List<Patient>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error serializing JSON:" + ex.Message);
+                throw;
+            }
+        }
+        public void SavePatients()
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(patients, Formatting.Indented);
+                File.WriteAllText(Filepath, json);
+            }
+            catch(JsonException ex)
+            {
+                Console.WriteLine("Error serializing JSON:" + ex.Message);
+            }
+        }
+        public void AddPatient()
+        {
+            try
+            {
+                Console.WriteLine("Enter the Number of Patient Details to add:");
                 int a = Convert.ToInt32(Console.ReadLine());
                 for (int i = 0; i < a; i++)
                 {
@@ -86,17 +122,18 @@ namespace JsonThreadOperation.Model
                     Console.WriteLine("Enter the Address:");
                     p.Address = Console.ReadLine();
 
-
-                    SavePatients();
-                    if (patients.Any(type => type.MobileNumber == p.MobileNumber || type.Email == p.Email))
-                        {
-                            patients.Add(p);
-                            Console.WriteLine("Patient Details added successfully!");
-                        }
+                   
+                    bool isDuplicated = patients.Any(type => type.MobileNumber == p.MobileNumber || type.Email == p.Email);
+                    if (!isDuplicated)
+                    {
+                        patients.Add(p);
+                        SavePatients();
+                        Console.WriteLine("Patient Details added successfully!");
+                    }
                     else
-                        {
-                            Console.WriteLine("Patient Details does not exist");
-                        }
+                    {
+                        Console.WriteLine("Patient Details does not exist");
+                    }
                 }
             }
             catch (Exception ex)
@@ -106,7 +143,7 @@ namespace JsonThreadOperation.Model
                 throw;
             }
         }
-        static void UpdatePatient()
+        public void UpdatePatient()
         {
             try
             {
@@ -144,7 +181,7 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine(ex.StackTrace);
             }
         }
-        static void DeletePatient()
+        public void DeletePatient()
         {
             try
             {
@@ -167,7 +204,7 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine(ex.StackTrace);
             }
         }
-        static void SearchPatient()
+        public void SearchPatient()
         {
             try
             {
@@ -177,10 +214,12 @@ namespace JsonThreadOperation.Model
                 List<Patient> patient = patients.Where(p => p.Name.Contains(keyword) || p.MobileNumber.ToString().Contains(keyword) || p.Email.Contains(keyword)).ToList();
                 if (patient.Any())
                 {
+                    Console.WriteLine("Name         MobileNumber            Email           Location            Address");
+
                     foreach (Patient filter in patient)
                     {
-                        Console.WriteLine($"{ filter.Name} {filter.MobileNumber} {filter.Email} {filter.Location} {filter.Address}");
 
+                        Console.WriteLine($"{ filter.Name} {filter.MobileNumber} {filter.Email} {filter.Location} {filter.Address}");
                     }
                 }
 
@@ -196,7 +235,7 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine(ex.StackTrace);
             }
         }
-        static void PrintPatientDetails()
+        public void PrintPatientDetails()
         {
             Console.WriteLine("Name         MobileNumber            Email           Location            Address");
             foreach (Patient view in patients)

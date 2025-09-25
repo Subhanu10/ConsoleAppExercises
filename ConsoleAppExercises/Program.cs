@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using JsonThreadOperation.Model;
 
 
-
 namespace ConsoleAppExercises
 {
     class Program
@@ -35,7 +34,8 @@ namespace ConsoleAppExercises
 
 
             Information details = new Information();
-            details.AddPatient();
+            details.ChoiceAction();
+            
         }
     }
 }

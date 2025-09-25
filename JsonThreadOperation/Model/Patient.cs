@@ -6,7 +6,7 @@ using System.IO;
 
 namespace JsonThreadOperation.Model
 {
-    internal class Patient
+    public class Patient
     {
         
             public string Name { get; set; }

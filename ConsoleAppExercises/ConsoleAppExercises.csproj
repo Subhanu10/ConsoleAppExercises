@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,6 +12,12 @@
   <ItemGroup>
     <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\JsonThreadOperation\JsonThreadOperation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\Data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

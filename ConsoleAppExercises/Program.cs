@@ -11,16 +11,16 @@ namespace ConsoleAppExercises
         static void Main(string[] args)
         
         {
-            //try
-            //{
-            //Console.WriteLine("Starting email sending process....");
-            //var sender = new MailKitEmailSender();
-            //sender.SendEmailAsync();
-            //}
-            //catch(Exception ex )
-            //{
+            try
+            {
+                Console.WriteLine("Starting email sending process....");
+                var sender = new MailKitEmailSender();
+                sender.SendEmailAsync();
+            }
+            catch (Exception ex)
+            {
 
-            //}
+            }
             //try
             //{
             //Console.WriteLine("Starting email sending process...");
@@ -33,9 +33,9 @@ namespace ConsoleAppExercises
             //}
 
 
-            Information details = new Information();
-            details.ChoiceAction();
-            
+            //Information details = new Information();
+            //details.ChoiceAction();
+
         }
     }
 }

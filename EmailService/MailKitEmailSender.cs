@@ -12,11 +12,11 @@ namespace EmailService
 
             string gmailAppPassword = "ggsbtuffqeyzumkp";
             string fromAddress = "subhanuvelusamy@gmail.com";
-            string toAddress = "sureshkumar.duraisamy@gmail.com";
+            string toAddress = "subhanu2719@gmail.com";
 
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress("subhanuvelusamy", fromAddress));
-            email.To.Add(new MailboxAddress("sureshkumar", toAddress));
+            email.To.Add(new MailboxAddress("subhanu", toAddress));
             email.Subject = "Test Email from New";
             email.Body = new TextPart("Plain")
             {

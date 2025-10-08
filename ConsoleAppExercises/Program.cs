@@ -2,6 +2,7 @@
 using EmailService;
 using Newtonsoft.Json;
 using JsonThreadOperation.Model;
+using DB_threadOperation;
 
 
 namespace ConsoleAppExercises
@@ -11,16 +12,17 @@ namespace ConsoleAppExercises
         static void Main(string[] args)
         
         {
-            try
-            {
-                Console.WriteLine("Starting email sending process....");
-                var sender = new MailKitEmailSender();
-                sender.SendEmailAsync();
-            }
-            catch (Exception ex)
-            {
 
-            }
+            //try
+            //{
+            //Console.WriteLine("Starting email sending process....");
+            //var sender = new MailKitEmailSender();
+            //sender.SendEmailAsync();
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
             //try
             //{
             //Console.WriteLine("Starting email sending process...");
@@ -35,6 +37,21 @@ namespace ConsoleAppExercises
 
             //Information details = new Information();
             //details.ChoiceAction();
+            try
+            {
+                DoctorRepository obj = new DoctorRepository();
+                    obj.GetDoctors();
+                DoctorDetails data = new DoctorDetails();
+                data.Name = ;
+                data.Email = "raj@gmail.com";
+                data.Age = 45;
+                obj.AddDoctors(data);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Something went wrong");
+            }
+
 
         }
     }

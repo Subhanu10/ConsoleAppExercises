@@ -14,7 +14,7 @@ namespace EmailService
         {
              string gmailAppPassword = "ggsb tuff qeyz umkp";
             string fromAddress = "subhanuvelusamy@gmail.com";
-            string toAddress = "suresh.duraisamy@gmail.com";
+            string toAddress = "subhanu2719@gmail.com";
 
             try
             {

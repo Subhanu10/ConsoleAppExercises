@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DB threadOperation\DB threadOperation.csproj" />
     <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\JsonThreadOperation\JsonThreadOperation.csproj" />
   </ItemGroup>

@@ -40,12 +40,8 @@ namespace ConsoleAppExercises
             try
             {
                 DoctorRepository obj = new DoctorRepository();
-                    obj.GetDoctors();
-                DoctorDetails data = new DoctorDetails();
-                data.Name = ;
-                data.Email = "raj@gmail.com";
-                data.Age = 45;
-                obj.AddDoctors(data);
+                obj.ChoiceAction();
+                
             }
             catch(Exception ex)
             {

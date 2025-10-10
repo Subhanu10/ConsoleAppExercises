@@ -10,7 +10,6 @@ namespace DB_threadOperation
 {
     public class DoctorRepository
     {
-        static List<DoctorDetails> doctordetails = new List<DoctorDetails>();
         string connectionString = "Server=DESKTOP-BLBGEHJ\\SQLEXPRESS;Database=batch11;User Id=sa;Password=Anaiyaan@123;";
         public void ChoiceAction()
         {
@@ -63,6 +62,10 @@ namespace DB_threadOperation
                 var connection = new SqlConnection(connectionString);
                 connection.Open();
                 var result = connection.Query<DoctorDetails>(sql).ToList();
+                foreach(var s in result)
+                {
+                    Console.WriteLine($"{s.Id}|{s.Name}|{s.Email}|{s.Age}");
+                }
                 connection.Close();
                 return result;
             }
@@ -99,6 +102,7 @@ namespace DB_threadOperation
                     connection.Open();
                     var result = connection.Execute(sql);
                     connection.Close();
+                    
                     Console.WriteLine("Successfully Added!");
                 }
             }
@@ -117,9 +121,9 @@ namespace DB_threadOperation
             try
             {
                 Console.WriteLine("Enter the Id to find the Details:");
-                int update = Convert.ToInt32(Console.ReadLine());
-                DoctorDetails updatedata = doctordetails.FirstOrDefault(s => s.Id == update);
-                if (updatedata != null)
+                int updateid = Convert.ToInt32(Console.ReadLine());
+                var updatedata = ViewDoctors().FirstOrDefault(s => s.Id == updateid);
+                if (updatedata != null && updatedata.Id > 0)
                 {
                     Console.WriteLine("Name:" + updatedata.Name);
                     string Name = Console.ReadLine();
@@ -131,12 +135,16 @@ namespace DB_threadOperation
                     int Age = Convert.ToInt32(Console.ReadLine());
                     if (Age>0)updatedata.Age = Age;
                     
-                    string sql = $"UPDATE Doctors SET updatedata.Name = Name, updatedata.Email = Email, updatedata.Age = Age WHERE id = @Id";
+                    string sql = $"UPDATE Doctors SET Name = @Name,Email = @Email,Age = @Age WHERE id = @Id";
                     var connection = new SqlConnection(connectionString);
                     connection.Open();
-                    var result = connection.Execute(sql);
+                    var result = connection.Execute(sql, new { Name = updatedata.Name, Email = updatedata.Email, Age = updatedata.Age, id = updateid } );
                     connection.Close();
                     Console.WriteLine("Successfully Updated!");
+                }
+                else
+                {
+                    Console.WriteLine("Could not found the doctorid");
                 }
             }
             catch(SqlException ex)
@@ -155,7 +163,7 @@ namespace DB_threadOperation
                 Console.WriteLine("Enter the Doctor Id to delete:");
                 var id = Console.ReadLine();
                 
-                string sql = $"DELETE FROM doctors WHERE DoctorsId = @id";
+                string sql = $"DELETE FROM doctors WHERE Id = {id}";
                 var connection = new SqlConnection(connectionString);
                 connection.Open();
                 var result = connection.Execute(sql);
@@ -176,22 +184,26 @@ namespace DB_threadOperation
             try
             {
                 Console.WriteLine("To Search the Doctordetails:");
-                var value = Console.ReadLine();
-                
-                string sql = $"SELECT*FROM doctors WHERE Name LIKE value% ";
+                var Search = "%" + Console.ReadLine() + "%";
+
+                string sql = $"SELECT id, Name, Email, Age FROM doctors WHERE id LIKE @Search OR Name LIKE @Search OR Email LIKE @Search ";
                 var connection = new SqlConnection(connectionString);
                 connection.Open();
-                var result = connection.Execute(sql);
+                var result = connection.Query(sql, new { Search });
+                foreach(var a in result)
+                {
+                    Console.WriteLine($"{a.id}|{a.Name}|{a.Email}|{a.Age}");
+                }
                 connection.Close();
             }
             catch (SqlException ex)
             {
-
+                throw;
             }
             catch (Exception ex)
             {
 
-            }
-        }        
+            }   
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace JsonThreadOperation.Model
 {
     public class Patient
     {
-        
+            public int Id { get; set; }
             public string Name { get; set; }
             public long MobileNumber { get; set; }
             public string Email { get; set; }

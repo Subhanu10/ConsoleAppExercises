@@ -13,50 +13,7 @@ namespace JsonThreadOperation.Model
         static string Filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Data\\Data.json";
 
         static List<Patient> patients = new List<Patient>();
-        public void ChoiceAction()
-        {
-            
-            while (true)
-            {
-                LoadPatients();
-                Console.WriteLine("Patient Details");
-                Console.WriteLine("1. Add Patients");
-                Console.WriteLine("2. Update Patients");
-                Console.WriteLine("3. Delete Patients");
-                Console.WriteLine("4. View Patients");
-                Console.WriteLine("5. Search Patients");
-                Console.WriteLine("6.Exist");
-                Console.WriteLine("Choose the ChoiceOption: ");
-                int Option = Convert.ToInt32(Console.ReadLine());
-                switch (Option)
-                {
-                    case 1:
-                        
-                        AddPatient();
-                        break;
-                    case 2:
-                        
-                        UpdatePatient();
-                        break;
-                    case 3:
-                        DeletePatient();
-                        break;
-                    case 4:
-                        
-                        PrintPatientDetails();
-                        break;
-                    case 5:
-                        SearchPatient();
-                        break;
-                    case 6:
-                        Environment.Exit(0);
-                        break;
-                    default:
-                        Console.WriteLine("Invalid Option. Please enter the valid Option.");
-                        break;
-                }
-            }
-        }
+        
         public void LoadPatients()
         {
             if (File.Exists(Filepath))
@@ -102,31 +59,16 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine("Error serializing JSON:" + ex.Message);
             }
         }
-        public void AddPatient()
+        public void AddPatient(Patient patient)
         {
             try
             {
-                Console.WriteLine("Enter the Number of Patient Details to add:");
-                int a = Convert.ToInt32(Console.ReadLine());
-                for (int i = 0; i < a; i++)
-                {
-                    Patient p = new Patient();
-                    Console.WriteLine("Enter the Name:");
-                    p.Name = Console.ReadLine();
-                    Console.WriteLine("Enter the MobileNumber:");
-                    p.MobileNumber = Convert.ToInt64(Console.ReadLine());
-                    Console.WriteLine("Enter the Email:");
-                    p.Email = Console.ReadLine();
-                    Console.WriteLine("Enter the Location:");
-                    p.Location = Console.ReadLine();
-                    Console.WriteLine("Enter the Address:");
-                    p.Address = Console.ReadLine();
-
-                   
-                    bool isDuplicated = patients.Any(type => type.MobileNumber == p.MobileNumber || type.Email == p.Email);
+                patient.Id = patients.Count + 1;
+                
+                bool isDuplicated = patients.Any(type => type.MobileNumber == patient.MobileNumber || type.Email == patient.Email);
                     if (!isDuplicated)
                     {
-                        patients.Add(p);
+                        patients.Add(patient);
                         SavePatients();
                         Console.WriteLine("Patient Details added successfully!");
                     }
@@ -134,7 +76,7 @@ namespace JsonThreadOperation.Model
                     {
                         Console.WriteLine("Patient Details does not exist");
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -143,37 +85,24 @@ namespace JsonThreadOperation.Model
                 throw;
             }
         }
-        public void UpdatePatient()
+        public void UpdatePatient(Patient patient)
         {
             try
             {
 
-                Console.WriteLine("Enter the MoibleNumber to Update");
-                long mobiletoupdate = Convert.ToInt64(Console.ReadLine());
 
-                Patient update = patients.FirstOrDefault(s => s.MobileNumber == mobiletoupdate);
+                Patient update = patients.FirstOrDefault(s => s.MobileNumber == patient.MobileNumber);
                 if (update != null)
                 {
-                    Console.WriteLine("Name:" + update.Name);
-                    string Name = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(Name)) update.Name = Name;
-                    Console.WriteLine("Email:" + update.Email);
-                    string Email = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(Email)) update.Email = Email;
-                    Console.WriteLine("Address:" + update.Address);
-                    string Address = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(Address)) update.Address = Address;
-                    Console.WriteLine("Location:" + update.Location);
-                    string Location = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(Location)) update.Location = Location;
+                    update.Name = patient.Name;
+                    update.MobileNumber = patient.MobileNumber;
+                    update.Email = patient.Email;
+                    update.Location = patient.Location;
+                    update.Address = patient.Address;
 
-                    SavePatients();
-                    Console.WriteLine("Patient Details Updated Successfully!");
+                    SavePatients();                  
                 }
-                else
-                {
-                    Console.WriteLine("Patient not found!");
-                }
+               
             }
             catch (Exception ex)
             {
@@ -181,22 +110,19 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine(ex.StackTrace);
             }
         }
-        public void DeletePatient()
+        public void DeletePatient(int Id)
         {
             try
             {
-                Console.WriteLine("Enter a number to delete:");
-                long MobileNumberTodelete = Convert.ToInt64(Console.ReadLine());
-                long patient = patients.RemoveAll(p => p.MobileNumber == MobileNumberTodelete);
-                if (patient > 0)
+               
+                var delete = patients.FirstOrDefault(p => p.Id == Id);
+                if (delete != null)
                 {
+                    
+                    patients.Remove(delete);
                     SavePatients();
-                    Console.WriteLine("Patient Successfully Deleted!");
                 }
-                else
-                {
-                    Console.WriteLine("Patient not Found");
-                }
+                
             }
             catch (Exception ex)
             {
@@ -204,12 +130,11 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine(ex.StackTrace);
             }
         }
-        public void SearchPatient()
+        public void SearchPatient(string keyword)
         {
             try
             {
-                Console.WriteLine("Enter the MobileNumber or Name or Email to Search:");
-                string keyword = Console.ReadLine();
+                
 
                 List<Patient> patient = patients.Where(p => p.Name.Contains(keyword) || p.MobileNumber.ToString().Contains(keyword) || p.Email.Contains(keyword)).ToList();
                 if (patient.Any())
@@ -223,10 +148,7 @@ namespace JsonThreadOperation.Model
                     }
                 }
 
-                else
-                {
-                    Console.WriteLine("Patient not found");
-                }
+               
             }
 
             catch (Exception ex)
@@ -243,6 +165,14 @@ namespace JsonThreadOperation.Model
                 Console.WriteLine("" + view.Name + "            " + view.MobileNumber + "           " + view.Email + "          " + view.Location + "           " + view.Address + "            ");
 
             }
+        }
+        public List<Patient> GetAllPatients()
+        {
+            return patients;
+        }
+        public Patient GetPatientById(int Id)
+        {
+            return patients.FirstOrDefault(p => p.Id == Id);
         }
     }
 }       

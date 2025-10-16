@@ -1,8 +1,11 @@
 ﻿using System;
-using EmailService;
 using Newtonsoft.Json;
 using JsonThreadOperation.Model;
 using DB_threadOperation;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Text;
+
 
 
 namespace ConsoleAppExercises
@@ -10,8 +13,11 @@ namespace ConsoleAppExercises
     class Program
     {
         static void Main(string[] args)
-        
+
         {
+
+            MyHttpclient obj = new MyHttpclient();
+            obj.HttpClientEmail();
 
             //try
             //{
@@ -37,18 +43,19 @@ namespace ConsoleAppExercises
 
             //Information details = new Information();
             //details.ChoiceAction();
-            try
-            {
-                DoctorRepository obj = new DoctorRepository();
-                obj.ChoiceAction();
-                
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine("Something went wrong");
-            }
+            //try
+            //{
+            //DoctorRepository obj = new DoctorRepository();
+            //obj.ChoiceAction();
+
+            //}
+            //catch(Exception ex)
+            //{
+            //Console.WriteLine("Something went wrong");
+            //}
 
 
         }
+
     }
 }

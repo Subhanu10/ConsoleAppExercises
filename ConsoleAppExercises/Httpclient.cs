@@ -37,12 +37,32 @@ namespace ConsoleAppExercises
 
                     return false;
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw ex;
             }
 
             
         }
+        public async Task GetTaskAsync()
+        {
+            try
+            {
+                using (var client = new GetTask())
+                {
+                    client.BaseAddress = new Uri("https://anaiyaan-api-dev.azurewebsites.net/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));                                    
+                    var response = client.GetAsJsonAsync("api/JsonCRUD");
+                    var result = response.Result;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

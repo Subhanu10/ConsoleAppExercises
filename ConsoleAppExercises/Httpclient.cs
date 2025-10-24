@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using ConsoleAppExercises.Model;
+
 
 namespace ConsoleAppExercises
 {
@@ -28,7 +30,7 @@ namespace ConsoleAppExercises
                     //string JsonData = JsonConvert.SerializeObject(email);
                     //StringContent content = new StringContent(JsonData, Encoding.UTF8, "application/Json");
 
-                    var  response = client.PostAsJsonAsync("api/SendEmail", email);
+                    var response = client.PostAsJsonAsync("api/SendEmail", email);
                     var result = response.Result;
                     if (response.Result.IsSuccessStatusCode)
                     {
@@ -38,31 +40,43 @@ namespace ConsoleAppExercises
                     return false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
-
-            
         }
-        public async Task GetTaskAsync()
+        public Patients[] GetPatientsAsync()
         {
             try
             {
-                using (var client = new GetTask())
+                using (var httpclient = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://anaiyaan-api-dev.azurewebsites.net/");
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));                                    
-                    var response = client.GetAsJsonAsync("api/JsonCRUD");
-                    var result = response.Result;
+
+                    httpclient.BaseAddress = new Uri("https://localhost:44342/");
+                    httpclient.DefaultRequestHeaders.Accept.Clear();
+                    httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+
+                    var patient = new Patients();
+                    string JsonData = JsonConvert.SerializeObject(patient);
+                    StringContent content = new StringContent(JsonData, Encoding.UTF8, "application/Json");
+
+                    var response = httpclient.GetAsync("api/Json").Result;
+
+                    if (response.IsSuccessStatusCode)
+                        return JsonConvert.DeserializeObject<Patients[]>(response.Content.ReadAsStringAsync().Result);
+                    else
+                        throw new Exception($"{response.Content.ReadAsStringAsync().Result}");
                 }
+               
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
+
     }
-}
+
+}  

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using ConsoleAppExercises.Model;
+using JsonThreadOperation.Model;
 
 
 namespace ConsoleAppExercises
@@ -76,7 +77,36 @@ namespace ConsoleAppExercises
             }
         }
 
+        public Register[] GetRegisterAsync()
+        {
+            try
+            {
+                using (var httpclient = new HttpClient())
+                {
 
+                    httpclient.BaseAddress = new Uri("https://localhost:44342/");
+                    httpclient.DefaultRequestHeaders.Accept.Clear();
+                    httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+
+                    var register = new Register();
+                    string JsonData = JsonConvert.SerializeObject(register);
+                    StringContent content = new StringContent(JsonData, Encoding.UTF8, "application/Json");
+
+                    var response = httpclient.GetAsync("api/Register").Result;
+
+                    if (response.IsSuccessStatusCode)
+                        return JsonConvert.DeserializeObject<Register[]>(response.Content.ReadAsStringAsync().Result);
+                    else
+                        throw new Exception($"{response.Content.ReadAsStringAsync().Result}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 
 }  

@@ -17,8 +17,9 @@ namespace ConsoleAppExercises
         {
 
             MyHttpclient obj = new MyHttpclient();
-           var result = obj.GetPatientsAsync();
             obj.HttpClientEmail();
+            var result = obj.GetPatientsAsync();
+           
 
 
             //try

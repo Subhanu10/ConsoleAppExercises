@@ -18,6 +18,7 @@ namespace ConsoleAppExercises
 
             MyHttpclient obj = new MyHttpclient();
             obj.HttpClientEmail();
+            obj.GetRegisterAsync();
             var result = obj.GetPatientsAsync();
            
 

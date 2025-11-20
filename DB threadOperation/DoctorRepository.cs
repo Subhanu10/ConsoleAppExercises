@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using System.Data.SqlClient;
-using System.Collections.Generic;
+
 namespace DB_threadOperation
 {
     public class DoctorRepository
